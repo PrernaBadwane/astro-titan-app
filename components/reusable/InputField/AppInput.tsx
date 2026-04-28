@@ -1,0 +1,374 @@
+import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  Animated,
+  Easing,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SansText } from "../Text/SansText";
+
+type InputVariant = "text" | "password" | "phone" | "dropdown" | "multiline" | "icon";
+
+type DropdownItem = {
+  label: string;
+  value: string;
+};
+
+type Props = TextInputProps & {
+  variant?: InputVariant;
+  style?: any;
+  containerStyle?: any;
+  label?: string;
+  callingCode?: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  onBlur?: () => void;
+  leftIcon?: React.ReactNode;
+  onPressLeftIcon?: () => void;
+  error?: string;
+  isCenter?:boolean
+  dropdownData?: DropdownItem[];
+  onSelectItem?: (item: DropdownItem) => void;
+};
+
+export default function AppInput({
+  variant = "text",
+  style,
+  containerStyle,
+  dropdownData = [],
+  value,
+  onSelectItem,
+  callingCode,
+  leftIcon,
+  onPressLeftIcon,
+  isCenter,
+  error,
+  ...props
+}: Props) {
+  const [hidePassword, setHidePassword] = useState(true);
+  const showError = !!error;
+  const isIconInput = variant === "icon";
+  /* DROPDOWN STATE */
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const animation = useState(new Animated.Value(0))[0];
+
+  const isPassword = variant === "password";
+  const isPhone = variant === "phone";
+  const isDropdown = variant === "dropdown";
+  const isMultiline = variant === "multiline";
+
+  const selectedLabel =
+    dropdownData.find((i) => i.value === value)?.label || "";
+
+  const toggleDropdown = () => {
+    if (dropdownVisible) {
+      Animated.timing(animation, {
+        toValue: 0,
+        duration: 180,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }).start(() => setDropdownVisible(false));
+    } else {
+      setDropdownVisible(true);
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 220,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  return (
+    <View style={containerStyle}>
+      {props.label && <SansText style={styles.label}>{props.label}</SansText>}
+
+      <View
+        style={[
+          styles.inputWrapper,
+          isPhone && styles.phoneWrapper,
+          isIconInput && styles.iconWrapper,
+          error && showError && isPhone && styles.inputError,
+          style,
+          
+        ]}
+      >
+        {/* 📞 PHONE */}
+        {isPhone && (
+          <View style={styles.countryBox}>
+            <SansText
+              style={[
+                styles.codeText,
+                error && showError && isPhone && styles.inputErrorContent,
+              ]}
+            >
+              +{callingCode}
+            </SansText>
+            <View
+              style={{
+                width: 1,
+                height: 24,
+                backgroundColor:
+                  error && showError && isPhone ? "#882715" : "#D4AF37",
+              }}
+            />
+          </View>
+        )}
+        {/* 🔽 DROPDOWN */}
+        {isDropdown ? (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[
+              styles.input,
+              styles.dropdownInput,
+              style,
+              error && showError && !isPhone && styles.inputError,
+            ]}
+            onPress={toggleDropdown}
+          >
+            <Text
+              style={{
+                color: selectedLabel ? "#111" : "#575757",
+                fontSize: 15,
+                includeFontPadding: false, // 🔥 ANDROID FIX
+                textAlignVertical: "center",
+              }}
+            >
+              {selectedLabel || props.placeholder}
+            </Text>
+
+            <Ionicons name="chevron-down" size={18} color="#575757" />
+          </TouchableOpacity>
+        ) : (
+          /* ✍️ INPUT */
+         
+        <TextInput
+          {...props}
+          value={value ?? ""}
+          onChangeText={(text) => {
+            if (isPhone) {
+              props.onChangeText?.(text);
+            } else {
+              props.onChangeText?.(text);
+            }
+          }}
+          onBlur={props.onBlur}
+          placeholderTextColor="#575757"
+          keyboardType={isPhone ? "phone-pad" : props.keyboardType}
+          secureTextEntry={isPassword ? hidePassword : props.secureTextEntry}
+          multiline={isMultiline}
+          numberOfLines={isMultiline ? props.numberOfLines || 4 : 1}
+          textAlignVertical={isMultiline ? "top" : "center"}
+          style={[
+            styles.input,
+            error && showError && styles.inputErrorContent,
+            error && showError && !isPhone && styles.inputError,
+            isPhone && styles.phoneInput,
+            isPassword && { paddingRight: 44 },
+            isMultiline && styles.multilineInput,
+            style,
+             isCenter && { textAlign: "center" }
+          ]}
+        />
+        )}
+        {/* 👁 PASSWORD */}
+        {isPassword && (
+          <TouchableOpacity
+            onPress={() => setHidePassword((p) => !p)}
+            style={styles.eyeBtn}
+          >
+            <Ionicons
+              name={hidePassword ? "eye-off-outline" : "eye-outline"}
+              size={20}
+              color="#575757"
+            />
+          </TouchableOpacity>
+        )}
+         { isIconInput && (
+            <TouchableOpacity
+              onPress={onPressLeftIcon}
+              style={styles.leftIcon}
+            >
+              {leftIcon || (
+                <Ionicons name="scan-outline" size={20} color="#575757" />
+              )}
+            </TouchableOpacity>
+          )}
+      </View>
+
+      {/* 🔴 ERROR */}
+      {error && <SansText style={styles.errorText}>{error}</SansText>}
+
+      {/* 📦 DROPDOWN LIST */}
+      {isDropdown && dropdownVisible && (
+        <Animated.View
+          style={[
+            styles.dropdownList,
+            {
+              opacity: animation,
+              maxHeight: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 220],
+              }),
+            },
+          ]}
+        >
+          {dropdownData.map((item) => (
+            <TouchableOpacity
+              key={item.value}
+              style={styles.dropdownItem}
+              onPress={() => {
+                onSelectItem?.(item);
+                props.onChangeText?.(item.value);
+                toggleDropdown();
+              }}
+            >
+              {item.label && (
+                <SansText style={styles.dropdownText}>{item.label}</SansText>
+              )}
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  inputWrapper: {
+    position: "relative",
+    color: "#0D0D0D",
+  },
+
+  label: {
+    fontSize: 18,
+    color: "#0D0D0D",
+    marginBottom: 8,
+    lineHeight: 26,
+  },
+
+  phoneWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1.2,
+    borderColor: "#DBBD59",
+    borderRadius: 16,
+    backgroundColor: "#EDDEAD",
+    height: 72,
+    paddingHorizontal: 8,
+  },
+
+  countryBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    height: "100%",
+    gap: 6,
+  },
+
+  codeText: {
+    fontSize: 16,
+    color: "#575757",
+    includeFontPadding: false, // 🔥 ANDROID FIX
+    textAlignVertical: "center",
+  },
+
+  input: {
+    height: 72,
+    borderRadius: 12,
+    borderWidth: 1.2,
+    borderColor: "#D4AF37",
+    fontSize: 15,
+    backgroundColor: "#E9D8A6",
+    flex: 1,
+    paddingHorizontal: 16,
+    fontFamily: "Sans",
+    textAlignVertical: "center", // 🔥 MOST IMPORTANT
+    includeFontPadding: false,
+    color: "#0D0D0D",
+  },
+
+  dropdownInput: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  phoneInput: {
+    flex: 1,
+    borderWidth: 0,
+    paddingHorizontal: 10,
+    backgroundColor: "transparent",
+  },
+
+  eyeBtn: {
+    position: "absolute",
+    right: 12,
+    top: 0,
+    height: 52,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  dropdownList: {
+    marginTop: 6,
+    borderWidth: 1,
+    borderColor: "#E4E4E4",
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+  },
+
+  dropdownItem: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F1F1",
+  },
+
+  dropdownText: {
+    fontSize: 15,
+    color: "#111",
+  },
+
+  multilineInput: {
+    minHeight: 100,
+    maxHeight: 160,
+    paddingTop: 12,
+    paddingBottom: 12,
+    textAlignVertical: "top",
+  },
+
+  inputError: {
+    borderColor: "#DC8B7D",
+    borderWidth: 1,
+  },
+  inputErrorContent: {
+    color: "#882715",
+  },
+
+  errorText: {
+    color: "#C2371E",
+    fontSize: 14,
+    marginTop: 12,
+    marginLeft: 4,
+  },
+  iconWrapper: {
+  position: "relative",
+},
+
+leftIcon: {
+  position: "absolute",
+  left: 12,
+  top: 0,
+  height: 72,
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 1,
+},
+});

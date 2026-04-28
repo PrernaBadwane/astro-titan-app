@@ -1,0 +1,77 @@
+import HomeActive from "@/assets/icons/navigation/home-active.svg";
+import HomeInactive from "@/assets/icons/navigation/home-inactive.svg";
+
+import CalendarActive from "@/assets/icons/navigation/calendar-active.svg";
+import CalendarInactive from "@/assets/icons/navigation/calendar-inactive.svg";
+
+import FirePitActive from "@/assets/icons/navigation/fire-pit-active.svg";
+import FirePitInactive from "@/assets/icons/navigation/fire-pit-inactive.svg";
+
+import CalenderIcon from "@/assets/icons/navigation/calendar.svg";
+import LocationIcon from "@/assets/icons/navigation/location.svg";
+import NoteIcon from "@/assets/icons/navigation/note.svg";
+import PackageIcon from "@/assets/icons/navigation/package.svg";
+import StarActive from "@/assets/icons/navigation/star-active.svg";
+import StarInactive from "@/assets/icons/navigation/star-inactive.svg";
+import TransactionIcon from "@/assets/icons/navigation/transaction.svg";
+import UserActive from "@/assets/icons/navigation/user-active.svg";
+import UserInactive from "@/assets/icons/navigation/user-inactive.svg";
+
+
+
+import CrownIcon from "@/assets/icons/navigation/crown.svg";
+import LogoutIcon from "@/assets/icons/navigation/logout.svg";
+import NotificationIcon from "@/assets/icons/navigation/notifications.svg";
+import SecurityIcon from "@/assets/icons/navigation/security.svg";
+
+
+
+import ArrowRoundedIcon from "@/assets/icons/actions/arrow-down-round.svg";
+import ArrowIcon from "@/assets/icons/actions/arrow.svg";
+
+import CallIcon from "@/assets/icons/visual/call.svg";
+import BookIcon from "@/assets/icons/visual/intent/book.svg";
+import BriefcaseIcon from "@/assets/icons/visual/intent/briefcase.svg";
+import HeartIcon from "@/assets/icons/visual/intent/favourite.svg";
+import MarriageIcon from "@/assets/icons/visual/intent/marriage.svg";
+import TieIcon from "@/assets/icons/visual/intent/tie.svg";
+import WellnessIcon from "@/assets/icons/visual/intent/wellness.svg";
+import StarIcon from "@/assets/icons/visual/star.svg";
+import TickIcon from "@/assets/icons/visual/tick.svg";
+export const ICONS = {
+  homeActive: HomeActive,
+  homeInactive: HomeInactive,
+
+  calendarActive: CalendarActive,
+  calendarInactive: CalendarInactive,
+
+  firePitActive: FirePitActive,
+  firePitInactive: FirePitInactive,
+
+  userActive: UserActive,
+  userInactive: UserInactive,
+  starActive: StarActive,
+  starInactive: StarInactive,
+  CalenderIcon: CalenderIcon,
+  PackageIcon: PackageIcon,
+  NoteIcon: NoteIcon,
+  LocationIcon: LocationIcon,
+  TransactionIcon: TransactionIcon,
+  SecurityIcon: SecurityIcon,
+  LogoutIcon: LogoutIcon,
+  CrownIcon: CrownIcon,
+  CallIcon: CallIcon,
+  NotificationIcon: NotificationIcon,
+  ArrowIcon:ArrowIcon,
+  ArrowRoundedIcon:ArrowRoundedIcon,
+  StarIcon:StarIcon,
+  BookIcon:BookIcon,
+  BriefcaseIcon:BriefcaseIcon,
+  MarriageIcon:MarriageIcon,
+  TieIcon:TieIcon,
+  WellnessIcon:WellnessIcon,
+  HeartIcon:HeartIcon,
+  TickIcon:TickIcon,
+};
+
+export type IconName = keyof typeof ICONS;
