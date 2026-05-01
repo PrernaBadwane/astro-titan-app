@@ -28,6 +28,11 @@ import SecurityIcon from "@/assets/icons/navigation/security.svg";
 
 import ArrowRoundedIcon from "@/assets/icons/actions/arrow-down-round.svg";
 import ArrowIcon from "@/assets/icons/actions/arrow.svg";
+import ChatIcon from "@/assets/icons/actions/bubble-chat.svg";
+import CancelIcon from "@/assets/icons/actions/cancel.svg";
+import DashboardCircleIcon from "@/assets/icons/actions/dashboard-circle.svg";
+import DeleteIcon from "@/assets/icons/actions/delete.svg";
+import FilterIcon from "@/assets/icons/actions/filter.svg";
 
 import CallIcon from "@/assets/icons/visual/call.svg";
 import BookIcon from "@/assets/icons/visual/intent/book.svg";
@@ -47,7 +52,7 @@ export const ICONS = {
 
   firePitActive: FirePitActive,
   firePitInactive: FirePitInactive,
-
+  DeleteIcon:DeleteIcon,
   userActive: UserActive,
   userInactive: UserInactive,
   starActive: StarActive,
@@ -72,6 +77,11 @@ export const ICONS = {
   WellnessIcon:WellnessIcon,
   HeartIcon:HeartIcon,
   TickIcon:TickIcon,
+  FilterIcon:FilterIcon,
+DashboardCircleIcon:DashboardCircleIcon,
+CancelIcon:CancelIcon,
+ChatIcon:ChatIcon
+
 };
 
 export type IconName = keyof typeof ICONS;

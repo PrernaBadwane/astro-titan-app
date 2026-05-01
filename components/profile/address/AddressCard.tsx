@@ -44,7 +44,10 @@ const AddressCard = ({ data, onEdit, onDelete }: Props) => {
           variant="outline"
           onPress={onDelete}
           style={{ flex: 1 }}
-          borderColor=""
+          borderColor="#C2371E"
+          textColor="#C2371E"
+          iconName="DeleteIcon"
+          iconPosition="left"
         />
 
         <ReusableButton
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: "#0D0D0D",
-    fontFamily:"SatoshiBold",
+    fontFamily: "SatoshiBold",
     flex: 1,
   },
 

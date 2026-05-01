@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
+import { BackHandler, StyleSheet, TouchableOpacity, View } from "react-native";
 
 type Props = {
   showBack?: boolean;
@@ -25,6 +25,27 @@ const AppHeader = ({
   children,
 }: Props) => {
   const router = useRouter();
+
+   const handleBack = () => {
+    if (onPressBack) {
+      onPressBack();
+    } else {
+      router.back();
+    }
+    return true; // prevent default system behavior
+  };
+
+  // 🔥 SYSTEM BACK CONTROL
+  useEffect(() => {
+    if (!showBack) return;
+
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+
+    return () => subscription.remove();
+  }, [onPressBack]);
 
   return (
     <View

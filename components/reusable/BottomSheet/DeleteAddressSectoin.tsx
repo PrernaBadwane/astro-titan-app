@@ -5,35 +5,36 @@ import { SatoshiText } from "../Text/SatoshiText";
 
 type Props = {
     onCancel: () => void;
-    onLogout: () => void;
+    onDelete: () => void;
 };
 
-const LogoutSection = ({ onCancel, onLogout }: Props) => {
+const DeleteAddressSection = ({ onCancel, onDelete }: Props) => {
     return (
         <View style={styles.container}>
-<View style={{gap:8}}><SatoshiText style={styles.title}>Log Out?</SatoshiText>
+            <View style={{ gap: 8 }}>
+                <SatoshiText style={styles.title}>Delete address?</SatoshiText>
 
-            <SansText style={styles.description}>
-                You’ll be signed out from this device only.
-                Your data and session history will remain safe and secure.
-            </SansText></View>
-            
+                <SansText style={styles.description}>
+                    This address will be removed from your saved list.
+                </SansText>
+            </View>
+
 
             <View style={styles.buttonRow}>
                 <View style={{ flex: 1 }}>
                     <ReusableButton
                         title="Cancel"
                         onPress={onCancel}
-                        variant="solid"
+                        variant="outline"
                         width="100%"
                     />
                 </View>
 
                 <View style={{ flex: 1 }}>
                     <ReusableButton
-                        title="Log Out"
-                        onPress={onLogout}
-                        variant="outline"
+                        title="Delete"
+                        onPress={onDelete}
+                        variant="error"
                         width="100%"
                     />
                 </View>
@@ -42,7 +43,7 @@ const LogoutSection = ({ onCancel, onLogout }: Props) => {
     );
 };
 
-export default LogoutSection;
+export default DeleteAddressSection;
 
 const styles = StyleSheet.create({
     container: {
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         gap: 12,
-        marginTop: 100,
     },
 
     cancelBtn: {

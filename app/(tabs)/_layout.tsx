@@ -36,8 +36,7 @@ export default function TabsLayout() {
           options={
             {
               tabIcon: {
-                active: "calendarActive",
-                inactive: "calendarInactive",
+                active: "calendarActive",                inactive: "calendarInactive",
               },
               title: "Kundali",
             } as CustomTabOptions

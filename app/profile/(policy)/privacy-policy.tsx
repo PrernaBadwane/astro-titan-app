@@ -4,6 +4,7 @@
 import AuthTitle from "@/components/auth/AuthTitle";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AppHeader from "@/components/reusable/AppHeader/AppHeader";
+import { router } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,7 +15,7 @@ const PrivacyPolicy = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <ScreenWrapper>
 
-                <AppHeader >
+                <AppHeader onPressBack={()=>{router.replace("/(tabs)/profile")}} >
                     <AuthTitle title="Privacy Policy">
                     </AuthTitle>
                 </AppHeader>

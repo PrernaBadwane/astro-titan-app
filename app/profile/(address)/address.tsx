@@ -6,13 +6,25 @@ import AuthTitle from "@/components/auth/AuthTitle";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import AddressCard from '@/components/profile/address/AddressCard';
 import AppHeader from "@/components/reusable/AppHeader/AppHeader";
+import DeleteAddressSection from '@/components/reusable/BottomSheet/DeleteAddressSectoin';
 import ReusableButton from '@/components/reusable/Button/ReusableButton';
 import { SansText } from "@/components/reusable/Text/SansText";
+import BottomSheetService from '@/redux/features/ui/GlobalSheet/BottomSheetService';
+import { router, } from 'expo-router';
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Address = () => {
+      const onPressDelete = () => {
+        BottomSheetService.open(
+          <DeleteAddressSection onCancel={BottomSheetService.close} onDelete={() => { }} />,
+          {
+            height: 400,
+            hasGradient: true,
+          }
+        );
+      };
     const addresses = [
         {
             id: "addr_001",
@@ -52,7 +64,7 @@ const Address = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <ScreenWrapper>
 
-                <AppHeader >
+                <AppHeader onPressBack={() => { router.replace("/(tabs)/profile") }}>
                     <AuthTitle title={addresses.length < 1 ? "No saved addresses" : "Saved address"}>
                         {(addresses.length < 1) && <SansText>
                             Add an address for deliveries, prasad, or home pooja.
@@ -82,20 +94,28 @@ const Address = () => {
 
                     }
                     {addresses.length !== 0 && (
-                        <ScrollView style={{ flex: 1 }}>
+                        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                             <View style={{ gap: 24, paddingVertical: 24 }}>
                                 {addresses.map((item) => (
                                     <AddressCard
                                         key={item.id}
                                         data={item}
-                                        onEdit={() => console.log("Edit", item.id)}
-                                        onDelete={() => console.log("Delete", item.id)}
+                                        onEdit={() => {
+                                            router.push({
+                                                pathname: "/profile/(address)/add-address",
+                                                params: {
+                                                    mode: "edit",
+                                                    data: JSON.stringify(item),
+                                                },
+                                            });
+                                        }}
+                                        onDelete={onPressDelete}
                                     />
                                 ))}
                             </View>
                         </ScrollView>
                     )}
-                    <ReusableButton onPress={() => { }} title='Add New Address'></ReusableButton></View></ScreenWrapper></SafeAreaView>
+                    <ReusableButton onPress={() => { router.push("/profile/(address)/add-address") }} title='Add New Address'></ReusableButton></View></ScreenWrapper></SafeAreaView>
     );
 };
 export default Address;

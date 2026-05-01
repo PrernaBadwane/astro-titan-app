@@ -77,14 +77,14 @@ const Profile = () => {
             <View style={styles.card}>
               <ProfileItem title="Birth Details" icon="CalenderIcon" />
               <ProfileItem title="Orders" icon="PackageIcon" />
-              <ProfileItem title="Session History" icon="NoteIcon" />
-              <ProfileItem title="Saved Addresses" icon="LocationIcon"  onPress={()=>{router.push("/(profile)/(address)/address")}} />
+              <ProfileItem title="Session History" icon="NoteIcon"  onPress={()=>{router.push("/chat/chat-history")}}/>
+              <ProfileItem title="Saved Addresses" icon="LocationIcon"  onPress={()=>{router.push("/profile/(address)/address")}} />
             </View></View>
 
           <View><SectionTitle titleFontSize={18} title="General"></SectionTitle>
             <View style={styles.card}>
               <ProfileItem title="Subscription Status" icon="TransactionIcon" />
-              <ProfileItem title="Privacy" icon="SecurityIcon" onPress={()=>{router.push("/(profile)/(policy)/privacy-policy")}}/>
+              <ProfileItem title="Privacy" icon="SecurityIcon" />
               <ProfileItem title="Logout" icon="LogoutIcon" onPress={onPressLogout} />
             </View></View>
           {/* GENERAL */}

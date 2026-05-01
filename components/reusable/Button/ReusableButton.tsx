@@ -1,3 +1,4 @@
+import { ICONS, IconName } from "@/components/icons";
 import React from "react";
 import {
   ActivityIndicator,
@@ -8,8 +9,7 @@ import {
 } from "react-native";
 import { useTheme } from "../../../hooks/useTheme";
 import { SatoshiText } from "../Text/SatoshiText";
-
-type ButtonVariant = "solid" | "outline" | "ghost"|"error";
+type ButtonVariant = "solid" | "outline" | "ghost" | "error";
 
 type Props = {
   title: string;
@@ -20,9 +20,10 @@ type Props = {
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   style?: ViewStyle;
-
+  iconName?: IconName;    // 👈 ADD THIS
+  iconSize?: number;
   /** NEW FLEXIBILITY */
-  width?: number | "auto" |string;
+  width?: number | "auto" | string;
   height?: number;
   textSize?: number;
   paddingHorizontal?: number;
@@ -39,6 +40,8 @@ export default function ReusableButton({
   loading = false,
   icon,
   iconPosition = "right",
+  iconName,         // fallback
+  iconSize = 20,
   style,
   width,
   height,
@@ -49,7 +52,7 @@ export default function ReusableButton({
   paddingHorizontal,
 }: Props) {
   const theme = useTheme();
-
+  const IconComponent = iconName ? ICONS[iconName] : null;
   const sizeStyle = [
     width === "auto" && { width: "auto" },
     typeof width === "number" && { width },
@@ -64,10 +67,18 @@ export default function ReusableButton({
     <View
       style={[
         styles.content,
-        iconPosition === "left" && { flexDirection: "row-reverse" },
+        iconPosition === "right" && { flexDirection: "row-reverse" },
       ]}
     >
-      {icon && <View style={styles.icon}>{icon}</View>}
+      {(IconComponent || icon) && (
+        <View style={styles.icon}>
+          {IconComponent ? (
+            <IconComponent width={iconSize} height={iconSize} />
+          ) : (
+            icon
+          )}
+        </View>
+      )}
 
       {loading ? (
         <ActivityIndicator
